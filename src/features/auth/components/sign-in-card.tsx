@@ -23,9 +23,14 @@ export const SingInCard=({setState}:SignInCardProps)=>{
 
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
+    const [pending,setPending]=useState(false);
 
-    const handleProviderSignIn=(value:"github"|"google")=>{
-        signIn(value);
+    const onProviderSignIn=(value:"github"|"google")=>{
+        setPending(true);
+        signIn(value)
+        .finally(()=>{
+            setPending(false);
+        })
     };
 
 
@@ -64,8 +69,8 @@ export const SingInCard=({setState}:SignInCardProps)=>{
                 <Separator/>
                 <div className="flex flex-col gap-y-2.5">
                     <Button
-                        disabled={false}
-                        onClick={()=>{}}
+                        disabled={pending}
+                        onClick={()=>onProviderSignIn("google")}
                         variant="outline"
                         size="lg"
                         className="w-full relative"
@@ -77,8 +82,8 @@ export const SingInCard=({setState}:SignInCardProps)=>{
 
 
                     <Button
-                        disabled={false}
-                        onClick={()=>handleProviderSignIn("github")}
+                        disabled={pending}
+                        onClick={()=>onProviderSignIn("github")}
                         variant="outline"
                         size="lg"
                         className="w-full relative"
